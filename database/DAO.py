@@ -65,22 +65,19 @@ class DAO():
         return result
 
     @staticmethod
-    def calcolaPeso(anno, forma, v0, v1):
+    def calcolaPeso(anno, forma, v0):
         conn = DBConnect.get_connection()
 
         result = []
 
         cursor = conn.cursor(dictionary=True)
         query = """select count(*) as peso
-                    from sighting s, sighting s1
-                    where YEAR(s.datetime)=%s
+                    from sighting s 
+                    where YEAR(s.`datetime`)=%s
                     and s.shape=%s
-                    and s.state=%s
-                    and s1.state=%s
-                    and YEAR(s.datetime)=YEAR(s1.`datetime`)
-                    and s.shape=s1.shape"""
+                    and s.state=%s"""
 
-        cursor.execute(query, (anno, forma, v0, v1) )
+        cursor.execute(query, (anno, forma, v0) )
 
         for row in cursor:
             result.append(row["peso"])

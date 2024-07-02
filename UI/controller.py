@@ -39,8 +39,9 @@ class Controller:
         self._view.txt_result.controls.append(
             ft.Text(f"Il grafo ha {self._model.getNumNodi()} nodi e {self._model.getNumArchi()} archi"))
         printPesi=self._model.pesiArchiAdiacenti()
+        printPesi.sort(key=lambda x: x[0])
         for a in printPesi:
-            self._view.txt_result.controls.append(ft.Text(f"Nodo{a[0]}, somma pesi su archi= {a[1]}"))
+            self._view.txt_result.controls.append(ft.Text(f"Nodo {a[0]}, somma pesi su archi= {a[1]}"))
         self._view.update_page()
 
     def handle_path(self, e):

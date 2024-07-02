@@ -26,9 +26,16 @@ class Model:
                     self._grafo.add_edge(a,self._idMap[i],weight=peso)
     def calcolaPeso(self, anno, forma,v0,v1):
         #anno è un intero mentre forma una stringa v0 e v1 sono oggetti di tipo state
-        listaPeso=DAO.calcolaPeso(anno, forma, v0.id, v1.id)
+        listaPeso = list()
+        listaPeso1 = list()
+        peso=0
+        listaPeso = DAO.calcolaPeso(anno, forma, v0.id)
+        listaPeso1 = DAO.calcolaPeso(anno, forma, v1.id)
+        listaPeso.extend(listaPeso1)
         if len(listaPeso)!=0:
-            return int(listaPeso[0])
+            for a in listaPeso:
+                peso+=int(a)
+            return peso
         else:
             return 0
         #il dao mi ritorna come risultato una lista di pesi, se la lista è vuota vuol dire che tra quei
@@ -42,10 +49,10 @@ class Model:
             listaPesi= list()
             #da calcolare il peso prendendo il peso dei vicini
             for i in self._grafo.neighbors(a):
-                listaPesi=list(self._grafo.get_edge_data(a,i))
+                listaPesi.append(self._grafo[a][i]["weight"])
             for b in listaPesi:
                 peso+=int(b)
-            pesoVicini= a, peso
+            pesoVicini= a.id, peso
             printPesi.append(copy.deepcopy(pesoVicini))#se no copio la stessa tupla su tutti le entry della lista
         return printPesi
 
